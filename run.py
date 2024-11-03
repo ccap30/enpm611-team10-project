@@ -9,6 +9,7 @@ import argparse
 
 import config
 from example_analysis import ExampleAnalysis
+from lifecycle_analysis import LifecycleAnalysis
 
 
 def parse_args():
@@ -21,6 +22,7 @@ def parse_args():
     You can also add more command line arguments following the pattern
     below.
     """
+    print('running!')
     ap = argparse.ArgumentParser("run.py")
     
     # Required parameter specifying what analysis to run
@@ -48,7 +50,7 @@ config.overwrite_from_args(args)
 if args.feature == 0:
     ExampleAnalysis().run()
 elif args.feature == 1:
-    pass # TODO call first analysis
+    LifecycleAnalysis().run()
 elif args.feature == 2:
     pass # TODO call second analysis
 elif args.feature == 3:

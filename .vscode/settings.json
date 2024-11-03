@@ -25,7 +25,6 @@
         "**/.0": true,
     },
     "workbench.colorCustomizations": {
-        "tab.activeBorder": "#ff0000",
         "tab.unfocusedActiveBorder": "#000000",
         "tab.activeBackground": "#045980"
     },

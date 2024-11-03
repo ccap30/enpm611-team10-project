@@ -17,7 +17,7 @@ class DataLoader:
         """
         Constructor
         """
-        self.data_path:str = config.get_parameter('ENPM611_PROJECT_DATA_PATH')
+        self.data_path:str = './poetry_issues_all.json'
         
     def get_issues(self):
         """
