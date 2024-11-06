@@ -28,8 +28,27 @@ class DataLoader:
         if _ISSUES is None:
             _ISSUES = self._load()
             print(f'Loaded {len(_ISSUES)} issues from {self.data_path}.')
+        self._clean_issues()
         return _ISSUES
     
+    def _clean_issues(self):
+        """
+        Removes problematic data from issues
+        """
+        # Remove null events
+        global _ISSUES
+        for issue in _ISSUES:
+            # 2 issues have null text
+            if issue.text is None:
+                issue.text = ""
+            
+            # 188 issues have null authors and event_date
+            for event in list(issue.events):
+                if event.author is None or event.event_date is None:
+                    issue.events.remove(event)
+        
+        
+
     def _load(self):
         """
         Loads the issues into memory.
