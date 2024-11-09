@@ -20,6 +20,7 @@ from data_loader import DataLoader
 # Data structures contain sentiment scores based on the comments of issues, not the original issues itself
 sentiment_scores = None  # Map containing datetimes (increasing order), scores, and issue title
 average_sentiment_scores = None  # Map from issue.number to average sentiment score
+issues_by_label = None  # Map label to issue.numbers
 
 _issues = None
 
@@ -30,9 +31,10 @@ class SentimentScores:
 
     def __init__(self):
         # Using global variables as they will not change
-        global sentiment_scores, average_sentiment_scores, _issues
+        global sentiment_scores, average_sentiment_scores, issues_by_label, _issues
         sentiment_scores = {}
         average_sentiment_scores = {}
+        issues_by_label = {}
         _issues = DataLoader().get_issues()
         self._populate_maps()
     
@@ -55,6 +57,8 @@ class SentimentScores:
                     total_score += score
                     sentiment_scores[issue.number]['dates'].append(event.event_date)
                     sentiment_scores[issue.number]['scores'].append(score)
+                    for label in issue.labels:
+                        issues_by_label.setdefault(label.lower(), []).append(issue.number)
             
             # Populate average_sentiment_scores map
             if count != 0:
@@ -65,24 +69,20 @@ class SentimentScores:
     def get_liner_regression(self, days_since_epoch, scores):
         slope, intercept, r_value, _, _ = linregress(days_since_epoch, scores)
         return slope, intercept, r_value
-    
-    def _plot_linear_regression_line(self, issue_number, dates, scores):
+
+    def _plot_linear_regression_line(self, keys, values):
         logging.debug("Attempting to plot linear regression line")
         # Linear regression cannot be done with fewer than two data points
-        if len(sentiment_scores[issue_number]['dates']) < 2:
-            logging.warning(f"Unable to create linear regression line for issue {issue_number}."
-                            "Fewer than two sentiment scores.")
+        if len(keys) < 2:
+            logging.warning(f"Unable to create linear regression line. Fewer than two data points.")
             return
 
-        # Convert datetime to numerical format (timestamps)
-        days_since_epoch = mdates.date2num(dates)
-
         # Perform linear regression
-        slope, intercept, r_value = self.get_liner_regression(days_since_epoch, scores)
-        regression_line = slope * days_since_epoch + intercept
-        plt.plot(days_since_epoch, regression_line, color='red', label=f'Linear Regression (r={r_value:.2f})')
+        slope, intercept, r_value = self.get_liner_regression(keys, values)
+        regression_line = slope * keys + intercept
+        plt.plot(keys, regression_line, color='red', label=f'Linear Regression (r={r_value:.2f})')
 
-    def _plot_data(self, issue_number, plot_lin_reg=True):
+    def _plot_sentiment_scores(self, issue_number, plot_lin_reg=True):
         # Lists of dates and sentiment scores
         dates = list(sentiment_scores[issue_number]['dates'])
         scores = list(sentiment_scores[issue_number]['scores'])
@@ -93,7 +93,9 @@ class SentimentScores:
 
         # Plot liner regression
         if plot_lin_reg:
-            self._plot_linear_regression_line(issue_number, dates, scores)
+            # Convert datetime to time since epoch
+            days_since_epoch = mdates.date2num(dates)
+            self._plot_linear_regression_line(days_since_epoch, scores)
 
         # Format the graph
         plt.xticks(rotation=45)
@@ -108,7 +110,7 @@ class SentimentScores:
         while(True):
             print("\n---------------------------")
             # Iterate over user data.
-            message = ("Please enter one of the following to display the sentiment score of a particular issue:\n"
+            message = ("Please enter one of the following to display sentiment scores:\n"
                        "- The first few words of an issue title\n"
                        "- An issue number\n"
                        "\n"
@@ -136,8 +138,8 @@ class SentimentScores:
                     logging.error(f"Could not find issue title starting with \'{user_input}\'")
                     continue
             
-            # Plot the data
-            self._plot_data(issue_number)
+            # Plot the sentiment scores
+            self._plot_sentiment_scores(issue_number)
 
 
 if __name__ == '__main__':
