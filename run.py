@@ -5,10 +5,12 @@ Starting point of the application. This module is invoked from
 the command line to run the analyses.
 """
 
+import logging
 import argparse
 
 import config
 from example_analysis import ExampleAnalysis
+from sentiment_scores import SentimentScores
 
 
 def parse_args():
@@ -37,7 +39,10 @@ def parse_args():
     
     return ap.parse_args()
 
-
+log_level = config.get_parameter('LOG_LEVEL')
+logging.basicConfig(level=logging.getLevelName(log_level),
+                    format='%(asctime)s [%(levelname)s] %(message)s',
+                    handlers=[logging.StreamHandler()])
 
 # Parse feature to call from command line arguments
 args = parse_args()
@@ -48,7 +53,7 @@ config.overwrite_from_args(args)
 if args.feature == 0:
     ExampleAnalysis().run()
 elif args.feature == 1:
-    pass # TODO call first analysis
+    SentimentScores().run()
 elif args.feature == 2:
     pass # TODO call second analysis
 elif args.feature == 3:

@@ -1,3 +1,7 @@
+# Project files
+debug_comments.txt
+data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
