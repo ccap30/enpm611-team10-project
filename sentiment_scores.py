@@ -26,7 +26,7 @@ _issues = None
 
 class SentimentScores:
     """
-    TODO: Generates sentiment scores using TextBlob
+    Generates sentiment scores using TextBlob
     """
 
     def __init__(self):
