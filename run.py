@@ -11,6 +11,7 @@ import argparse
 import config
 from example_analysis import ExampleAnalysis
 from sentiment_scores import SentimentScores
+from sentiment_trends import SentimentTrends
 
 
 def parse_args():
@@ -55,6 +56,7 @@ if args.feature == 0:
 elif args.feature == 1:
     SentimentScores().run()
 elif args.feature == 2:
+    SentimentTrends().run()
     pass # TODO call second analysis
 elif args.feature == 3:
     pass # TODO call third analysis
