@@ -113,7 +113,6 @@ class SentimentScores:
         plt.show()
 
     def run(self):
-        print(issues_by_label)
         while(True):
             print("\n---------------------------")
             # Iterate over user data.
@@ -148,7 +147,6 @@ class SentimentScores:
             # Plot the sentiment scores
             self._plot_sentiment_scores(issue_number)
     
-
 if __name__ == '__main__':
     # Run for testing
     log_level = config.get_parameter('LOG_LEVEL')
