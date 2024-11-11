@@ -1,3 +1,8 @@
 {
-    "ENPM611_PROJECT_DATA_PATH":"path/to/data/file.json"
+    "ENPM611_PROJECT_DATA_PATH": "data/poetry_issues.json",
+
+    "LOG_LEVEL": "INFO",
+
+    "DEBUG_MODE": true,
+    "DEBUG_COMMENTS_PRINT_PATH": "data/debug_comments.txt"
 }
