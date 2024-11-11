@@ -13,10 +13,17 @@ With the utility functions provided, you should focus on implementing creative a
 
 In addition to the utility functions, an example analysis has also been implemented in `example_analysis.py`. It illustrates how to use the provided utility functions and how to produce output.
 
+## Analyses Description
+### Sentiment Scores Analysis
+Given an issue title or number, the sentiment score for each of the comments is calculated and displayed. Additionally, a linear regression line is displayed to show the overall sentiment accross all comments within an issue. Note: linear regression can't be calculated if an issue has less than two comments.
+
+### Sentiment Trends Analysis
+The sentiment trends analysis dives into issues labeled: bug, duplicate, feature, enhancement and question. We plot the sentiment of comments for these issues (averaged by month) over time. This allows us to see how the sentiment of different labels evolves over time, providing insight into community involvement accross different issue types.
+
+### Sentiment Distribution Analysis
+The sentiment distribution analysis examines the relationship between number of bugs per month and the sentiment score for that month. This is divided into subcategories for features and bugs. This analysis shows as the number of bugs increases the overall sentiment remains neutral. Given the large number of comments, it's unsurprising that the sentiment follows a normal distribution.
+
 ## Setup
-
-To get started, your team should create a fork of this repository. Then, every team member should clone your repository to their local computer. 
-
 
 ### Install dependencies
 
@@ -38,6 +45,19 @@ With everything set up, you should be able to run the existing example analysis:
 ```
 python run.py --feature 0
 ```
+Sentiment scores analysis:
+```
+python run.py --feature 1
+```
+Sentiment trends analysis:
+```
+python run.py --feature 2
+```
+Sentiment distribution analysis:
+```
+python run.py --feature 3
+```
+
 
 That will output basic information about the issues to the command line.
 

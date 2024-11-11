@@ -38,6 +38,12 @@ class SentimentScores:
         _issues = DataLoader().get_issues()
         self._populate_maps()
     
+    def get_issues_by_label(self):
+        return issues_by_label
+
+    def get_sentiment_scores(self):
+        return sentiment_scores
+
     def _populate_maps(self):
         for issue in _issues:
             # Initialize variables
@@ -140,8 +146,7 @@ class SentimentScores:
             
             # Plot the sentiment scores
             self._plot_sentiment_scores(issue_number)
-
-
+    
 if __name__ == '__main__':
     # Run for testing
     log_level = config.get_parameter('LOG_LEVEL')
