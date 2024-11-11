@@ -37,7 +37,10 @@ class SentimentScores:
         issues_by_label = {}
         _issues = DataLoader().get_issues()
         self._populate_maps()
-    
+    def get_sentiment_score(self,issueNumber):
+        if issueNumber in average_sentiment_scores:
+            return average_sentiment_scores[issueNumber]
+        return 0
     def _populate_maps(self):
         for issue in _issues:
             # Initialize variables
