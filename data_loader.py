@@ -39,7 +39,11 @@ class DataLoader:
     def _debug_print(self, file, text):
         if self.debug_mode:
             file.write(text)
-    
+    def load_data(self):
+        # Load the JSON data
+        with  open(self.data_path,'r') as fin:
+          return   json.load(fin)
+
     def _preprocess_data(self):
         """
         Removes problematic data from issues ahead of sentiment analysis
