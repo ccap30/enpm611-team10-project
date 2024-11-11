@@ -86,12 +86,13 @@ class SentimentScores:
         # Linear regression cannot be done with fewer than two data points
         if len(keys) < 2:
             logging.warning(f"Unable to create linear regression line. Fewer than two data points.")
-            return
+            return False
 
         # Perform linear regression
         slope, intercept, r_value = self.get_liner_regression(keys, values)
         regression_line = slope * keys + intercept
         plt.plot(keys, regression_line, color='red', label=f'Linear Regression (r={r_value:.2f})')
+        return True
 
     def _plot_sentiment_scores(self, issue_number, plot_lin_reg=True):
         # Lists of dates and sentiment scores
@@ -106,14 +107,16 @@ class SentimentScores:
         if plot_lin_reg:
             # Convert datetime to time since epoch
             days_since_epoch = mdates.date2num(dates)
-            self._plot_linear_regression_line(days_since_epoch, scores)
+            lin_reg_success = self._plot_linear_regression_line(days_since_epoch, scores)
 
         # Format the graph
         plt.xticks(rotation=45)
         plt.xlabel('Date')
         plt.ylabel('Sentiment Score')
         plt.title(f"{sentiment_scores[issue_number]['title']}...")
-        plt.legend()
+        # Only show the legend if the linear regression line was added to the figure
+        if lin_reg_success:
+            plt.legend()
         plt.tight_layout()
         plt.show()
 
@@ -123,7 +126,7 @@ class SentimentScores:
             # Iterate over user data.
             message = ("Please enter one of the following to display sentiment scores:\n"
                        "- The first few words of an issue title\n"
-                       "- An issue number\n"
+                       "- An issue number (e.g. 7051, 4055, etc.) \n"
                        "\n"
                        "- or enter \'exit\' to quit analysis.\n\n"
                        "> ")
@@ -143,8 +146,9 @@ class SentimentScores:
                 logging.debug(f"Trying to find issue with title: '{user_input}'...")
                 found = False
                 for issue in _issues:
-                    if issue.text.startswith(user_input):
+                    if issue.title.startswith(user_input):
                         issue_number = issue.number
+                        found = True
                 if not found:
                     logging.error(f"Could not find issue title starting with \'{user_input}\'")
                     continue
