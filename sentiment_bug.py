@@ -1,4 +1,4 @@
-import json
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -54,6 +54,21 @@ class SentimentAnalysis:
         self.df['Week'] = self.df['CreatedDate'].dt.to_period('W')  # Year-Week period
         self.df['Year'] = self.df['CreatedDate'].dt.year  # Extract the year
 
+    def _print_statistics(self, data):
+        min_val = np.min(data['AvgSentimentScore'])
+        max_val = np.max(data['AvgSentimentScore'])
+        mean_val = np.mean(data['AvgSentimentScore'])
+        median_val = np.median(data['AvgSentimentScore'])
+        q1_val = np.percentile(data['AvgSentimentScore'], 25)  # Q1
+        q3_val = np.percentile(data['AvgSentimentScore'], 75)  # Q3
+
+        print(f"Min: {min_val:.2f}\n"
+            f"Q1: {q1_val:.2f}\n"
+            f"Median: {median_val:.2f}\n"
+            f"Mean: {mean_val:.2f}\n"
+            f"Q3: {q3_val:.2f}\n"
+            f"Max: {max_val:.2f}")
+
     def plot_combined(self):
         # Create subplots: 1 row and 2 columns
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 12))
@@ -83,6 +98,11 @@ class SentimentAnalysis:
         ax1.set_xlabel('Number of Bugs/Features')
         ax1.set_ylabel('Average Sentiment Score')
         ax1.legend()
+
+        print("Statistics for bugs (grouped by week): ")
+        self._print_statistics(weekly_bugs)
+        print("\nStatistics for features (grouped by week): ")
+        self._print_statistics(weekly_features)
 
         # ---------------- 3D Plot for Sentiment vs Bugs (Yearly) ----------------
         # Group by Year and calculate the number of bugs and average sentiment score

@@ -3,6 +3,6 @@
 
     "LOG_LEVEL": "INFO",
 
-    "DEBUG_MODE": true,
+    "DEBUG_MODE": false,
     "DEBUG_COMMENTS_PRINT_PATH": "data/debug_comments.txt"
 }

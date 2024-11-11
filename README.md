@@ -24,7 +24,7 @@ Given an issue title or number, the sentiment score for each of the comments is 
 The sentiment trends analysis dives into issues labeled: bug, duplicate, feature, enhancement and question. We plot the sentiment of comments for these issues (averaged by month) over time. This allows us to see how the sentiment of different labels evolves over time, providing insight into community involvement across different issue types.
 
 ### Sentiment Distribution Analysis
-The sentiment distribution analysis examines the relationship between number of bugs per month and the sentiment score for that month. This is divided into subcategories for features and bugs. This analysis shows as the number of bugs increases the overall sentiment remains neutral. Given the large number of comments, it's unsurprising that the sentiment follows a normal distribution.
+The sentiment distribution analysis examines the relationship between number of bugs per week and the sentiment score for that week. This is divided into subcategories for features and bugs. This analysis shows as the number of bugs increases the overall sentiment remains neutral. Given the large number of comments, it's unsurprising that the sentiment follows a normal distribution.
 
 ## Setup
 

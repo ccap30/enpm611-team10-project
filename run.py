@@ -12,7 +12,7 @@ import config
 from example_analysis import ExampleAnalysis
 from sentiment_scores import SentimentScores
 from sentiment_trends import SentimentTrends
-from sentiment_bug import SentimentAnalysisYearly
+from sentiment_bug import SentimentAnalysis
 
 
 def parse_args():
@@ -60,6 +60,6 @@ elif args.feature == 2:
     SentimentTrends().run()
 elif args.feature == 3:
     data_path = config.get_parameter('ENPM611_PROJECT_DATA_PATH')
-    SentimentAnalysisYearly(data_path).run()
+    SentimentAnalysis(data_path).run()
 else:
     print('Need to specify which feature to run with --feature flag.')
